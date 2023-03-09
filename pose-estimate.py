@@ -3,7 +3,7 @@ import time
 import torch
 import argparse
 import numpy as np
-import json
+import json #_________________________________paziopath_______________________________________________________#
 import matplotlib.pyplot as plt
 from torchvision import transforms
 from utils.datasets import letterbox
@@ -11,8 +11,9 @@ from utils.torch_utils import select_device
 from models.experimental import attempt_load
 from utils.general import non_max_suppression_kpt, strip_optimizer, xyxy2xywh
 from utils.plots import output_to_keypoint, plot_skeleton_kpts, colors, plot_one_box_kpt
+#_________________________________paziopath_______________________________________________________#
 from pathlib import Path
-from utils.general import coco80_to_coco91_class
+
 
 NOSE = [0]
 LEFT_EYE = [1]
@@ -44,12 +45,12 @@ key_map = {
     15: 'left_ankle',
     16: 'right_ankle'
 }
-
+#_________________________________paziopath_______________________________________________________#
 
 @torch.no_grad()
 def run(poseweights="yolov7-w6-pose.pt", source="football1.mp4", device='gpu', view_img=False,
         save_conf=True, line_thickness=3, hide_labels=False, hide_conf=True,
-        save_dir=Path(r"C:\Users\kaire\Documents\GitRepos\yolo\yolov7-pose-estimation")):
+        save_dir=Path(r"C:\Users\elham\Documents\GitHub\yolov7-pose-estimation")):
     frame_count = 0  # count no of frames
     total_fps = 0  # count total fps
     time_list = []  # list to store time
@@ -82,14 +83,16 @@ def run(poseweights="yolov7-w6-pose.pt", source="football1.mp4", device='gpu', v
                               cv2.VideoWriter_fourcc(*'mp4v'), 30,
                               (resize_width, resize_height))
 
+#_________________________________paziopath_______________________________________________________#
         jdict = dict()
-        coco91class = coco80_to_coco91_class()
+        
         count_i = 0
+#_________________________________paziopath_______________________________________________________#
         while (cap.isOpened):  # loop until cap opened or video not complete
 
             print("Frame {} Processing".format(frame_count + 1))
-            # if frame_count == 3:
-            #    break
+            
+            
 
             ret, frame = cap.read()  # get frame and success from video capture
 
@@ -125,8 +128,10 @@ def run(poseweights="yolov7-w6-pose.pt", source="football1.mp4", device='gpu', v
                 gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
 
                 for i, pose in enumerate(output_data):  # detections per image
+#_________________________________paziopath_______________________________________________________#
                     predn = pose.clone()
                     frame_dic = []
+#_________________________________paziopath_______________________________________________________#
                     if len(output_data):  # check if no pose
                         for c in pose[:, 5].unique():  # Print results
                             n = (pose[:, 5] == c).sum()  # detections per class
@@ -142,6 +147,7 @@ def run(poseweights="yolov7-w6-pose.pt", source="football1.mp4", device='gpu', v
                                              line_thickness=opt.line_thickness, kpt_label=True, kpts=kpts, steps=3,
                                              orig_shape=im0.shape[:2])
 
+#_________________________________paziopath_______________________________________________________#
                         # for json
                         image_id = i
                         box = xyxy2xywh(predn[:, :4])  # xywh
@@ -157,7 +163,8 @@ def run(poseweights="yolov7-w6-pose.pt", source="football1.mp4", device='gpu', v
                             klist = list()
 
                             for i in range(0, len(key_point),
-                                           3):  # every 3 items in keypoints into a list [x,y,weight]????
+                                           3):  
+                                           
                                 klist.append(key_point[i:i + 3])
 
                             for j in range(len(klist)):
@@ -166,7 +173,9 @@ def run(poseweights="yolov7-w6-pose.pt", source="football1.mp4", device='gpu', v
 
                             det_dict.update({'keypoints': kdict})
                             frame_dic.append(det_dict)
-
+                            
+#_________________________________paziopath_______________________________________________________#
+                            
                 if frame_dic == []:
                     det_dict = ({
                         'bbox': 'null',
@@ -191,8 +200,10 @@ def run(poseweights="yolov7-w6-pose.pt", source="football1.mp4", device='gpu', v
                     cv2.waitKey(1)  # 1 millisecond
 
                 out.write(im0)  # writing the video frame
+
+#_________________________________paziopath_______________________________________________________#
                 count_i += 1
-                # print(jdict[count_i])
+                
 
             else:
                 break
@@ -203,11 +214,13 @@ def run(poseweights="yolov7-w6-pose.pt", source="football1.mp4", device='gpu', v
         print(f"Average FPS: {avg_fps:.3f}")
         if len(jdict):
             w = Path('')  # weights
-            # anno_json = './coco/annotations/instances_val2017.json'  # annotations json
+            
             pred_json = str(save_dir / f"{w}_predictions.json")  # predictions json
             print('\nEvaluating pycocotools mAP... saving %s...' % pred_json)
             with open(pred_json, 'w') as f:
                 json.dump(jdict, f)
+                
+#_________________________________paziopath_______________________________________________________#
 
         # plot the comparision graph
         plot_fps_time_comparision(time_list=time_list, fps_list=fps_list)
@@ -238,7 +251,7 @@ def plot_fps_time_comparision(time_list, fps_list):
     plt.plot(time_list, fps_list, 'b', label="FPS & Time")
     plt.savefig("FPS_and_Time_Comparision_pose_estimate.png")
 
-
+#_________________________________paziopath_______________________________________________________#
 def vii_tool_format(df, filename):
     import os.path
     import datetime
@@ -338,33 +351,28 @@ def vii_tool_format(df, filename):
                     str(j) + "_AnkleRight_X": str(i[j]['keypoints']['right_ankle'][0]),
                     str(j) + "_AnkleRight_Y": str(i[j]['keypoints']['right_ankle'][1])
                 }
-
             fr_dict["frameAttributes"].update(frameAttributes)
         frames.append(fr_dict)
 
     output_json.update({'Frames': frames})
 
-    save_dir = Path(r"C:\Users\kaire\Documents\GitRepos\yolo\yolov7-pose-estimation")
-    pred_json = str(save_dir / f"Classroom_Vii_predictions.json")  # predictions json
+    save_dir = Path(r"C:\Users\elham\Documents\GitHub\yolov7-pose-estimation")
+    pred_json = str(save_dir / f"Vii_predictions.json")  # predictions json
     print('\nsaving %s...' % pred_json)
     with open(pred_json, 'w') as f:
         json.dump(output_json, f, indent=4)
-    Test = 1
+
 
 
 # main function
 def main(opt):
-    # run(**vars(opt))
+    run(**vars(opt))
     import pandas as pd
-    # with open(r"C:\Users\kaire\Documents\GitRepos\yolo\yolov7-pose-estimation\._predictions.json") as json_data:
-    #    data = json.load(json_data)
-    #    df = pd.DataFrame.from_dict(data)
-    # j.to_dict(orient='index')['FRAME 0'][0]['keypoints']
-    j = pd.read_json(r"C:\Users\kaire\Documents\GitRepos\yolo\yolov7-pose-estimation\classroom_predictions.json",
+    j = pd.read_json(r"C:\Users\elham\Documents\GitHub\yolov7-pose-estimation\._predictions.json",
                      orient="index")
     vii_tool_format(j, 'football1.mp4')
     x = 0
-
+#_________________________________paziopath_______________________________________________________#
 
 if __name__ == "__main__":
     opt = parse_opt()
