@@ -49,7 +49,7 @@ key_map = {
 @torch.no_grad()
 def run(poseweights="yolov7-w6-pose.pt", source="football1.mp4", device='gpu', view_img=False,
         save_conf=True, line_thickness=3, hide_labels=False, hide_conf=True,
-        save_dir=Path(r"C:\Users\elham\Documents\GitHub\yolov7-pose-estimation")):
+        save_dir=Path(r"C:\Users\USERNAME\Documents\GitHub\yolov7-pose-estimation")):
     frame_count = 0  # count no of frames
     total_fps = 0  # count total fps
     time_list = []  # list to store time
@@ -355,7 +355,7 @@ def vii_tool_format(df, filename):
 
     output_json.update({'Frames': frames})
 
-    save_dir = Path(r"C:\Users\elham\Documents\GitHub\yolov7-pose-estimation")
+    save_dir = Path(r"C:\Users\USERNAME\Documents\GitHub\yolov7-pose-estimation")
     pred_json = str(save_dir / f"Vii_predictions.json")  # predictions json
     print('\nsaving %s...' % pred_json)
     with open(pred_json, 'w') as f:
@@ -367,7 +367,7 @@ def vii_tool_format(df, filename):
 def main(opt):
     run(**vars(opt))
     import pandas as pd
-    j = pd.read_json(r"C:\Users\elham\Documents\GitHub\yolov7-pose-estimation\._predictions.json",
+    j = pd.read_json(r"C:\Users\USERNAME\Documents\GitHub\yolov7-pose-estimation\._predictions.json",
                      orient="index")
     vii_tool_format(j, 'football1.mp4')
     x = 0
