@@ -13,7 +13,7 @@ from utils.general import non_max_suppression_kpt, strip_optimizer, xyxy2xywh
 from utils.plots import output_to_keypoint, plot_skeleton_kpts, colors, plot_one_box_kpt
 from pathlib import Path #paziopath
 
-
+#_________________________________paziopath_______________________________________________________#
 NOSE = [0]
 LEFT_EYE = [1]
 RIGHT_EYE = [2]
